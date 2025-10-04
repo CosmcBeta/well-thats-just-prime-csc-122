@@ -34,3 +34,8 @@ std::vector<int> Factorizer::getPrimeFactors(int num)
     }
     return factors;
 }
+
+bool Factorizer::isPrime(int num)
+{
+    return  num > 1 && getPrimeFactors(num).size() == 1;
+}
