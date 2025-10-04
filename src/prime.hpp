@@ -1,3 +1,7 @@
-#include <string>
+#include <vector>
 
-std::string prime();
+class Factorizer
+{
+public:
+    std::vector<int> getPrimeFactors(int num);
+};
