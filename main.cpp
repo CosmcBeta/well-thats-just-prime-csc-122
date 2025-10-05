@@ -8,7 +8,7 @@ int main() {
     int num;
     std::cin >> num;
     std::cout << "The prime factors of " << num << " are: \n";
-    for (int f : factorizer.getPrimeFactors(num))
+    for (int f : factorizer.primeFactors(num))
     {
         std::cout << f << "\n";
     }

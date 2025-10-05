@@ -11,23 +11,23 @@ TEST_CASE( "prime_factors" ) {
     Factorizer factorizer;
 
     // Zero
-    REQUIRE(factorizer.getPrimeFactors(0) == std::vector<int>{});
-    REQUIRE(factorizer.getPrimeFactors(1) == std::vector<int>{});
+    REQUIRE(factorizer.primeFactors(0) == std::vector<int>{});
+    REQUIRE(factorizer.primeFactors(1) == std::vector<int>{});
     // One
-    REQUIRE(factorizer.getPrimeFactors(2) == std::vector<int>{2});
-    REQUIRE(factorizer.getPrimeFactors(13) == std::vector<int>{13});
+    REQUIRE(factorizer.primeFactors(2) == std::vector<int>{2});
+    REQUIRE(factorizer.primeFactors(13) == std::vector<int>{13});
     // Many
-    REQUIRE(factorizer.getPrimeFactors(9) == std::vector<int>{3, 3});
-    REQUIRE(factorizer.getPrimeFactors(10) == std::vector<int>{2, 5});
-    REQUIRE(factorizer.getPrimeFactors(12) == std::vector<int>{2, 2, 3});
-    REQUIRE(factorizer.getPrimeFactors(60) == std::vector<int>{2, 2, 3, 5});
+    REQUIRE(factorizer.primeFactors(9) == std::vector<int>{3, 3});
+    REQUIRE(factorizer.primeFactors(10) == std::vector<int>{2, 5});
+    REQUIRE(factorizer.primeFactors(12) == std::vector<int>{2, 2, 3});
+    REQUIRE(factorizer.primeFactors(60) == std::vector<int>{2, 2, 3, 5});
     // Boundaries
-    REQUIRE(factorizer.getPrimeFactors(97) == std::vector<int>{97});
-    REQUIRE(factorizer.getPrimeFactors(49) == std::vector<int>{7, 7});
+    REQUIRE(factorizer.primeFactors(97) == std::vector<int>{97});
+    REQUIRE(factorizer.primeFactors(49) == std::vector<int>{7, 7});
     // Exceptions
-    REQUIRE(factorizer.getPrimeFactors(-5) == std::vector<int>{});
+    REQUIRE(factorizer.primeFactors(-5) == std::vector<int>{});
     // Sample
-    REQUIRE(factorizer.getPrimeFactors(4) == std::vector<int>{2, 2});
+    REQUIRE(factorizer.primeFactors(4) == std::vector<int>{2, 2});
 }
 
 TEST_CASE("isPrime")
@@ -51,4 +51,29 @@ TEST_CASE("isPrime")
     REQUIRE(factorizer.isPrime(-5) == false);
     // Sample
     REQUIRE(factorizer.isPrime(4) == false);
+}
+
+TEST_CASE("reduce")
+{
+    Factorizer factorizer;
+    // Zero
+    REQUIRE(factorizer.reduce(0, 5) == "0");
+    REQUIRE(factorizer.reduce(5, 0) == "UNDEFINED"); // if you decide division by 0 should throw
+    // One
+    REQUIRE(factorizer.reduce(1, 1) == "1");
+    REQUIRE(factorizer.reduce(12, 12) == "1");
+    REQUIRE(factorizer.reduce(1, 5) == "1/5");
+    REQUIRE(factorizer.reduce(5, 1) == "5");
+    // Many
+    REQUIRE(factorizer.reduce(36, 12) == "3");     // multiple factors cancel out
+    REQUIRE(factorizer.reduce(150, 100) == "3/2"); // reduces by 50
+    // Boundaries
+    REQUIRE(factorizer.reduce(-12, 8) == "-3/2");  // sign handling
+    REQUIRE(factorizer.reduce(12, -8) == "-3/2");  // denominator negative
+    REQUIRE(factorizer.reduce(-12, -8) == "3/2");  // double negative
+    // Exceptions
+    REQUIRE(factorizer.reduce(7, 0) == "UNDEFINED");
+    // Sample
+    REQUIRE(factorizer.reduce(12, 14) == "6/7");
+    REQUIRE(factorizer.reduce(12, 37) == "12/37");
 }
